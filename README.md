@@ -28,12 +28,18 @@ composer install
 ```bash
 php artisan key:generate
 ```
-7. Migration & Seeder
-```bash
-php artisan migrate -s
+7. Set the administrator account credentials in `.env` before running the seeder:
+```dotenv
+ADMIN_NAME=Administrator
+ADMIN_EMAIL=your-admin-email@example.com
+ADMIN_PASSWORD=choose-a-strong-password
 ```
-8. copy folder image yang ada pada folder public ke dalam folder storage/app
-9. Buat symlink untuk storage
+8. Migration & Seeder
+```bash
+php artisan migrate --seed
+```
+9. Copy the images from the `public` folder into `storage/app`
+10. Create the storage symlink
 ```bash
 php artisan storage:link
 ```  
