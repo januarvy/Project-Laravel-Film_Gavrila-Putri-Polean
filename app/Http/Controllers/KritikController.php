@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Kritik;
+use App\Models\Film;
 use App\Http\Requests\StoreKritikRequest;
 use App\Http\Requests\UpdateKritikRequest;
 
@@ -27,9 +28,16 @@ class KritikController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreKritikRequest $request)
+    public function store(StoreKritikRequest $request, Film $film)
     {
-        //
+        $film->kritiks()->create([
+            ...$request->validated(),
+            'user_id' => $request->user()->id,
+        ]);
+
+        return redirect()
+            ->route('movies.show', $film)
+            ->with('success', 'Your review was submitted successfully.');
     }
 
     /**
