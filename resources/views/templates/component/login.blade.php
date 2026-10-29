@@ -7,6 +7,19 @@
       </div>
       <section>
         <div class="modal-body">
+          @if ($errors->any() || session('success'))
+            <div class="alert {{ $errors->any() ? 'alert-danger' : 'alert-success' }}" style="padding:10px 15px; margin-bottom:10px;">
+              @if ($errors->any())
+                <ul style="margin:0; padding-left:20px;">
+                  @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                  @endforeach
+                </ul>
+              @else
+                {{ session('success') }}
+              @endif
+            </div>
+          @endif
           <div class="w3_login_module">
             <div class="module form-module">
               <div class="toggle"><i class="fa fa-times fa-pencil"></i>
@@ -14,19 +27,21 @@
               </div>
               <div class="form">
               <h3>Login to your account</h3>
-              <form action="#" method="post">
-                <input type="text" name="Username" placeholder="Username" required="">
-                <input type="password" name="Password" placeholder="Password" required="">
+              <form action="{{ route('login') }}" method="post">
+                @csrf
+                <input type="email" name="email" placeholder="Email Address" required="" value="{{ old('email') }}">
+                <input type="password" name="password" placeholder="Password" required="">
                 <input type="submit" value="Login">
               </form>
               </div>
               <div class="form">
               <h3>Create an account</h3>
-              <form action="#" method="post">
-                <input type="text" name="Username" placeholder="Username" required="">
-                <input type="password" name="Password" placeholder="Password" required="">
-                <input type="email" name="Email" placeholder="Email Address" required="">
-                <input type="text" name="Phone" placeholder="Phone Number" required="">
+              <form action="{{ route('register') }}" method="post">
+                @csrf
+                <input type="text" name="name" placeholder="Username" required="" value="{{ old('name') }}">
+                <input type="password" name="password" placeholder="Password" required="">
+                <input type="email" name="email" placeholder="Email Address" required="" value="{{ old('email') }}">
+                <input type="text" name="phone" placeholder="Phone Number" required="" value="{{ old('phone') }}">
                 <input type="submit" value="Register">
               </form>
               </div>

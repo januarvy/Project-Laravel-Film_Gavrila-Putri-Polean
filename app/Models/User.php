@@ -19,7 +19,10 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'phone',
         'password',
+        'role_id',
+        'profile_id',
     ];
 
     /**
@@ -31,6 +34,16 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
+
+    public function kritiks()
+    {
+        return $this->hasMany(Kritik::class);
+    }
 
     /**
      * Get the attributes that should be cast.
