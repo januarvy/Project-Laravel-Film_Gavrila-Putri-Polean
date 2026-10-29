@@ -66,7 +66,7 @@ input[type="submit"],.agileinfo_chat a,.w3ls_footer_grid1_left p a,.w3l_sign_in_
 }
 .w3_search{
 	float: left;
-    width: 40%;
+    width: 46%;
     margin-left: 9em;
 	margin-top: .7em;
 }
@@ -76,9 +76,10 @@ input[type="submit"],.agileinfo_chat a,.w3ls_footer_grid1_left p a,.w3l_sign_in_
     background:#EFEFEF;
     padding: 10px;
     text-align: center;
-    font-size: 14px;
+    font-size: 16px;
     color: #999;
     width: 78%;
+    height: 42px;
     float: left;
     border-top-left-radius: 25px;
     border-bottom-left-radius: 25px;
@@ -91,6 +92,7 @@ input[type="submit"],.agileinfo_chat a,.w3ls_footer_grid1_left p a,.w3l_sign_in_
     font-size: 14px;
     color: #fff;
     width: 22%;
+    height: 42px;
     border-top-right-radius: 25px;
     border-bottom-right-radius: 25px;
 }
@@ -206,6 +208,36 @@ ul.dropdown-menu.multi-column ul li a:hover{
 .w3l-movie-gride-agile1 {
     width: 82.5% !important;
     margin: 0 auto !important;
+}
+.browse-inner .w3l-movie-gride-agile > a > img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+.movie-rating {
+    display: inline-flex;
+    align-items: center;
+    gap: 1px;
+    white-space: nowrap;
+}
+.movie-rating-star {
+    position: relative;
+    display: inline-block;
+    color: #ddd;
+    line-height: 1;
+}
+.movie-rating-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    color: #ff8d1b;
+    white-space: nowrap;
+}
+.movie-rating-value {
+    margin-left: 4px;
+    color: #555;
+    font-size: 12px;
 }
 /*-- //banner-bottom --*/
 /*-- general --*/

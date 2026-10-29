@@ -38,7 +38,7 @@
           <div class="single-right-grids">
 
             <div class="col-md-4 single-right-grid-left">
-              <a href="{{ route('movies.show', $film->id) }}"><img src="/{{ $film->poster }}" alt="" /></a>
+              <a href="{{ route('movies.show', $film->id) }}"><img src="{{ asset($film->poster) }}" alt="" /></a>
             </div>
             <div class="col-md-8 single-right-grid-right">
               <div class="song-info">
@@ -53,13 +53,13 @@
                       <thead>
                         <tr>
                         <th>Cast</th>
-                        <th>Peran</th>
+                        <th>Role</th>
                         </tr>
                       </thead>
                       <tbody>
                         @foreach ($perans as $peran)
                         <tr>
-                          <td class="w3-list-info">{{ $peran->cast_id }}</td>
+                          <td class="w3-list-info">{{ $peran->cast->name ?? '-' }}</td>
                           <td class="w3-list-info">{{ $peran->actor }}</td>
                         </tr>
                         @endforeach
@@ -116,22 +116,43 @@
         <div class="clearfix"> </div>
         <div class="all-comments">
           <div class="all-comments-info">
-            <a href="#">Comments</a>
+            <a href="#">Reviews</a>
+            @if (session('success'))
+              <div class="alert alert-success">{{ session('success') }}</div>
+            @endif
+            @if ($errors->any())
+              <div class="alert alert-danger">
+                <ul>
+                  @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                  @endforeach
+                </ul>
+              </div>
+            @endif
             <div class="agile-info-wthree-box">
-              <form>
-                <input type="text" placeholder="Name" required="">			           					   
-                <input type="text" placeholder="Email" required="">
-                <input type="text" placeholder="Phone" required="">
-                <textarea placeholder="Message" required=""></textarea>
-                <input type="submit" value="SEND">
-                <div class="clearfix"> </div>
-              </form>
+              @auth
+                <form action="{{ route('movies.comments.store', $film) }}" method="post">
+                  @csrf
+                  <textarea name="comment" placeholder="Write a review..." required>{{ old('comment') }}</textarea>
+                  <label for="rating">Rating</label>
+                  <select id="rating" name="rating" required>
+                    <option value="">Select a rating</option>
+                    @foreach (range(1, 5) as $rating)
+                      <option value="{{ $rating }}" {{ old('rating') == $rating ? 'selected' : '' }}>{{ $rating }} / 5</option>
+                    @endforeach
+                  </select>
+                  <input type="submit" value="SEND">
+                  <div class="clearfix"> </div>
+                </form>
+              @else
+                <p>Please <a href="{{ route('login') }}">log in</a> to write a review.</p>
+              @endauth
             </div>
           </div>
           <div class="media-grids">
             @foreach ($comments as $comment)
               <div class="media">
-                <h5>{{ $comment->user_id }}</h5>
+                <h5>{{ $comment->user->name ?? 'User' }}</h5>
                 <div class="media-left">
                   <a href="#">
                     <img src="{{ asset('storage/images/user.jpg') }}" title="One movies" alt=" " />
@@ -151,11 +172,12 @@
           <div class="single-grid-right">
             <div class="single-right-grids">
               <div class="col-md-4 single-right-grid-left">
-                <a href="{{ route('movies.show', $film->id) }}"><img src="/{{ $film->poster }}" alt="" /></a>
+                <a href="{{ route('movies.show', $film->id) }}"><img src="{{ asset($film->poster) }}" alt="" /></a>
               </div>
               <div class="col-md-8 single-right-grid-right">
                 <a href="{{ route('movies.show', $film->id) }}" class="title">{{ $film->title }}</a>
                 <p class="author"><a href="#" class="author">{{ $film->year }}</a></p>
+                <x-movie-rating :rating="$film->display_rating" />
                 <p class="views" style="text-align: justify; margin-right: 10px">{{ $film->sinopsis }}</p>
               </div>
               <div class="clearfix"> </div>
@@ -172,7 +194,7 @@
         @foreach ($filmByRelease as $filmRelease)
           <div class="item">
             <div class="w3l-movie-gride-agile w3l-movie-gride-agile1">
-              <a href="{{ route('movies.show', $filmRelease->id) }}" class="hvr-shutter-out-horizontal"><img src="/{{ $filmRelease->poster }}" title="{{ $filmRelease->title }}" class="img-responsive" alt=" " />
+              <a href="{{ route('movies.show', $filmRelease->id) }}" class="hvr-shutter-out-horizontal"><img src="{{ asset($filmRelease->poster) }}" title="{{ $filmRelease->title }}" class="img-responsive" alt=" " />
                 <div class="w3l-action-icon"><i class="fa fa-play-circle" aria-hidden="true"></i></div>
               </a>
               <div class="mid-1 agileits_w3layouts_mid_1_home">
@@ -182,13 +204,7 @@
                 <div class="mid-2 agile_mid_2_home">
                   <p>{{ $filmRelease->year }}</p>
                   <div class="block-stars">
-                    <ul class="w3l-ratings">
-                      <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-                      <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-                      <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-                      <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-                      <li><a href="#"><i class="fa fa-star-half-o" aria-hidden="true"></i></a></li>
-                    </ul>
+                    <x-movie-rating :rating="$filmRelease->display_rating" />
                   </div>
                   <div class="clearfix"></div>
                 </div>
@@ -213,7 +229,7 @@
 @endsection
 
 @push('scripts')
-<script src="js/simplePlayer.js"></script>
+<script src="{{ asset('template/js/simplePlayer.js') }}"></script>
 <script>
 	$("document").ready(function() {
 		$("#video").simplePlayer();

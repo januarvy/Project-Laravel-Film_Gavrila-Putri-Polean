@@ -4,6 +4,13 @@
 <link href="{{ asset('template/css/owl.carousel.css') }}" rel="stylesheet" type="text/css" media="all">
 <!-- banner-slider -->
 <link href="{{ asset('template/css/jquery.slidey.min.css') }}" rel="stylesheet">
+<style>
+  .home-movie-poster {
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+  }
+</style>
 @endpush
 
 @section('content')
@@ -11,7 +18,7 @@
 <div id="slidey" style="display:none;">
   <ul>
     @foreach ($filmSlidey as $film)
-      <li><img src="{{ $film->poster }}" alt="{{ $film->title }}">
+      <li><img src="{{ asset($film->poster) }}" alt="{{ $film->title }}">
         <p class='title'>{{ $film->title }}</p>
         <p class='description'>{{ $film->sinopsis }}</p>
       </li>
@@ -38,7 +45,7 @@
         @for ($data = 0; $data < $films->count(); $data++)
           <div class="item">
             <div class="w3l-movie-gride-agile w3l-movie-gride-agile1">
-              <a href="{{ route('movies.show', $films[$data]->id) }}" class="hvr-shutter-out-horizontal"><img src="{{ asset($films[$data]->poster) }}" title="album-name" alt=" " />
+              <a href="{{ route('movies.show', $films[$data]->id) }}" class="hvr-shutter-out-horizontal"><img class="home-movie-poster" src="{{ asset($films[$data]->poster) }}" title="{{ $films[$data]->title }}" alt="{{ $films[$data]->title }}" />
                 <div class="w3l-action-icon">
                   <i class="fa fa-play-circle" aria-hidden="true"></i>
                 </div>
@@ -50,15 +57,7 @@
                 <div class="mid-2">
                   <p>{{ $films[$data]->year }}</p>
                   <div class="block-stars">
-                    <ul class="w3l-ratings">
-                          <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-                        <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-                        <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-                        <li><a href="#"><i class="fa fa-star-half-o" aria-hidden="true"></i></a></li>
-                        <li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
-                          
-                
-                    </ul>
+                    <x-movie-rating :rating="$films[$data]->display_rating" />
                   </div>
                   <div class="clearfix"></div>
                 </div>
@@ -100,7 +99,7 @@
           <div class="w3_agile_featured_movies">
             @for ($data = 0; $data < $filmFutured->count(); $data++)
               <div class="col-md-2 w3l-movie-gride-agile">
-                <a href="{{ route('movies.show', $filmFutured[$data]->id) }}" class="hvr-shutter-out-horizontal"><img src="{{ asset($filmFutured[$data]->poster) }}" title="album-name" alt=" " />
+                <a href="{{ route('movies.show', $filmFutured[$data]->id) }}" class="hvr-shutter-out-horizontal"><img class="home-movie-poster" src="{{ asset($filmFutured[$data]->poster) }}" title="{{ $filmFutured[$data]->title }}" alt="{{ $filmFutured[$data]->title }}" />
                   <div class="w3l-action-icon">
                     <i class="fa fa-play-circle" aria-hidden="true"></i>
                   </div>
@@ -112,15 +111,7 @@
                   <div class="mid-2">
                     <p>{{ $filmFutured[$data]->year }}</p>
                     <div class="block-stars">
-                      <ul class="w3l-ratings">
-                            <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-                          <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-                          <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-                          <li><a href="#"><i class="fa fa-star-half-o" aria-hidden="true"></i></a></li>
-                          <li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
-                            
-                  
-                      </ul>
+                      <x-movie-rating :rating="$filmFutured[$data]->display_rating" />
                     </div>
                     <div class="clearfix"></div>
                   </div>
@@ -139,7 +130,7 @@
           <div class="w3_agile_featured_movies">
             @for ($data = 0; $data < $filmRecentAdded->count(); $data++)
               <div class="col-md-2 w3l-movie-gride-agile">
-                <a href="{{ route('movies.show', $filmRecentAdded[$data]->id) }}" class="hvr-shutter-out-horizontal"><img src="{{ asset($filmRecentAdded[$data]->poster) }}" title="album-name" alt=" " />
+                <a href="{{ route('movies.show', $filmRecentAdded[$data]->id) }}" class="hvr-shutter-out-horizontal"><img class="home-movie-poster" src="{{ asset($filmRecentAdded[$data]->poster) }}" title="{{ $filmRecentAdded[$data]->title }}" alt="{{ $filmRecentAdded[$data]->title }}" />
                   <div class="w3l-action-icon">
                     <i class="fa fa-play-circle" aria-hidden="true"></i>
                   </div>
@@ -151,15 +142,7 @@
                   <div class="mid-2">
                     <p>{{ $filmRecentAdded[$data]->year }}</p>
                     <div class="block-stars">
-                      <ul class="w3l-ratings">
-                            <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-                          <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-                          <li><a href="#"><i class="fa fa-star" aria-hidden="true"></i></a></li>
-                          <li><a href="#"><i class="fa fa-star-half-o" aria-hidden="true"></i></a></li>
-                          <li><a href="#"><i class="fa fa-star-o" aria-hidden="true"></i></a></li>
-                            
-                  
-                      </ul>
+                      <x-movie-rating :rating="$filmRecentAdded[$data]->display_rating" />
                     </div>
                     <div class="clearfix"></div>
                   </div>
